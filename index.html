@@ -14,67 +14,16 @@
 <body>
 <div id="canvas-frame"></div>
 
-
-<script type="module">
-  "use strict";
-	import * as THREE from 'https://cdn.skypack.dev/three@0.130.1'
-	import { OrbitControls } from 'https://cdn.skypack.dev/three@0.130.1/examples/jsm/controls/OrbitControls.js'
-	import { RGBELoader } from 'https://cdn.skypack.dev/three@0.130.1/examples/jsm/loaders/RGBELoader.js'
-
-  (function () {
-
-		const canvas = document.getElementById('canvas-frame');
-
-		// WebGL renderer
-		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-		renderer.toneMapping = THREE.ACESFilmicToneMapping
-		renderer.outputEncoding = THREE.sRGBEncoding
-		renderer.setSize(1200, 714)
-		canvas.appendChild(renderer.domElement)
-
-		// Scene, Camera
-		const scene = new THREE.Scene()
-
-		const hdrUrl = './scythian_tombs_4k.hdr'
-		new RGBELoader().load(hdrUrl, texture => {
-			const gen = new THREE.PMREMGenerator(renderer)
-			const envMap = gen.fromEquirectangular(texture).texture
-			scene.environment = envMap
-			scene.background = envMap
-
-			texture.dispose()
-			gen.dispose()
-		})
-
-
-		const camera = new THREE.PerspectiveCamera(
-			75,
-			1.68 / 1,
-			0.1,
-			1000
-		)
-		camera.position.set(0, 0, 3)
-
-
-		// OrbitControls
-		const controls = new OrbitControls(camera, renderer.domElement)
-
-		// Render loop
-		function animate() {
-			requestAnimationFrame(animate)
-			controls.update()
-			renderer.render(scene, camera)
-		}
-		animate()
-
-		// Window sizing
-		window.addEventListener('resize', onWindowResize, false)
-		function onWindowResize() {
-			camera.aspect = window.innerWidth / window.innerHeight
-			camera.updateProjectionMatrix()
-			renderer.setSize(window.innerWidth, window.innerHeight)
-		}
-  })();
+<script src="https://unpkg.com/three@0.105.2/build/three.min.js"></script>
+<script src="./panolens.min.js"></script>
+<script>
+	let canvas = document.getElementById('canvas-frame');
+	let panorama = new PANOLENS.ImagePanorama('./vestibule.jpg');
+	let viewer = new PANOLENS.Viewer({
+		container: canvas,
+		cameraFov: 50,
+	});
+	viewer.add(panorama);
 </script>
 </body>
 </html>
