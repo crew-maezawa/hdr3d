@@ -2,12 +2,25 @@
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Title</title>
 	<style>
+		body{
+			margin: 0;
+			padding: 0;
+		}
+
 		#canvas-frame{
 			width: 1200px;
 			height: 714px;
 			margin: 0 auto;
+		}
+		
+		@media screen and (max-width: 768px){
+			#canvas-frame{
+				width: 100vw;
+				height: 100vh;
+			}
 		}
 	</style>
 </head>
